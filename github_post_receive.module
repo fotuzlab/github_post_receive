@@ -1,0 +1,53 @@
+<?php
+
+/**
+ * Implements hook_menu().
+ */
+function github_post_receive_menu() {
+  $items['admin/config/services/github'] = array(
+    'title' => t('Github Post Recieve admin settings form'),
+    'page callback' => 'drupal_get_form',
+	  'page arguments' => array('github_post_receive_admin_settings'),
+	  'file' => 'github_post_receive.include.admin.inc',
+	  'access arguments' => array('administer github post receive'),
+    'type' => MENU_SUGGESTED_ITEM,
+  );
+  $items['github'] = array(
+    'page callback' => 'github_post_receive_execute',
+    'access callback' => 'github_post_receive_access',
+    'type' => MENU_CALLBACK,
+  );
+  
+  return $items;
+}
+
+function github_post_receive_access() {
+  if($ip_restriction = variable_get('github_post_receive_ip_restriction','127.0.0.1')) {
+    $ip_list = explode(',',$ip_restriction);
+    if (!in_array(ip_address(),$ip_list)) {
+      return FALSE;
+    }
+  }
+  return TRUE;
+}
+
+/**
+ * Implements hook_permission().
+ */
+function github_post_receive_permission() {
+  return array(
+    'administer github post receive' =>  array(
+      'title' => t('Administer github post receive'),
+      'description' => t('Perform administration tasks for Github integration.'),
+    ),
+  );
+}
+
+function github_post_receive_execute() {
+  if(isset($_POST)){
+    drupal_json_output(array('post data' => $_POST));
+  }
+  else {
+    drupal_json_output(array('error' => 'No Post Data'));
+  }
+}

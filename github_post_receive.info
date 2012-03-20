@@ -1,0 +1,5 @@
+name = github_post_receive 
+core = 7.x
+files[] = github_post_receive.include.admin.inc
+description = "Run configurable tasks on receiving post service hook from github"
+dependencies[] = "rules"
