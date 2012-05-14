@@ -7,7 +7,7 @@
 
 function github_post_receive_rules_event_info() {
   $events['github_post_receive_'] = array(
-    'label' => t('Github event after every push'),
+    'label' => t('Github event on push'),
     'group' => t('Github Post Receive'),
     'variables' => array(
       'github_push_data' => array(

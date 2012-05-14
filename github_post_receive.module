@@ -7,9 +7,9 @@ function github_post_receive_menu() {
   $items['admin/config/services/github'] = array(
     'title' => t('Github Post Recieve admin settings form'),
     'page callback' => 'drupal_get_form',
-	  'page arguments' => array('github_post_receive_admin_settings'),
-	  'file' => 'github_post_receive.include.admin.inc',
-	  'access arguments' => array('administer github post receive'),
+    'page arguments' => array('github_post_receive_admin_settings'),
+    'file' => 'github_post_receive.include.admin.inc',
+    'access arguments' => array('administer github post receive'),
     'type' => MENU_SUGGESTED_ITEM,
   );
   $items['github'] = array(
@@ -23,6 +23,7 @@ function github_post_receive_menu() {
 
 function github_post_receive_access() {
   if($ip_restriction = variable_get('github_post_receive_ip_restriction','127.0.0.1')) {
+    preg_replace('/s','',$ip_restriction);
     $ip_list = explode(',',$ip_restriction);
     if (!in_array(ip_address(),$ip_list)) {
       return FALSE;
